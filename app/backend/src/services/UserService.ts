@@ -1,5 +1,5 @@
 import * as bcrypt from 'bcryptjs';
-import { IUserLogin } from '../Interfaces/users/IUser';
+import IUser, { IUserLogin } from '../Interfaces/users/IUser';
 import { IToken } from '../Interfaces/IToken';
 import { IUserModel } from '../Interfaces/users/IUserModel';
 import { ServiceResponse } from '../Interfaces/Response';
@@ -19,17 +19,26 @@ export default class UserService {
   //   return { status: 'NOT_FOUND', data: { message: 'Not found' } };
   // }
 
-  public async findByEmail({ email, password }: IUserLogin):
+  public async login({ email, password }: IUserLogin):
   Promise<ServiceResponse<IToken | null>> {
     const user = await this.userModel.findbyEmail(email);
 
     // if (!user) return { status: 'UNAUTHORIZED', data: { message: 'User not found' } };
-    console.log(user);
     if (!user || !bcrypt.compareSync(password, user.password)) {
       return { status: 'UNAUTHORIZED', data: { message: 'Invalid email or password' } };
     }
 
     const token = JWT.sign({ email });
     return { status: 'SUCCESSFUL', data: { token } };
+  }
+
+  public async getRole(email: string):
+  Promise<ServiceResponse<Pick<IUser, 'role'> | null>> {
+    const user = await this.userModel.findbyEmail(email);
+    if (user) {
+      const { role } = user;
+      return { status: 'SUCCESSFUL', data: { role } };
+    }
+    return { status: 'UNAUTHORIZED', data: { message: 'Invalid email or password' } };
   }
 }

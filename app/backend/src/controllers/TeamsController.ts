@@ -14,7 +14,6 @@ export default class TeamsController {
 
   public async findById(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
-    console.log(id);
     const { status, data } = await this.teamService.findById(Number(id));
     return res.status(mapStatusHTTP(status)).json(data);
   }

@@ -1,5 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
-import JWT from '../utils/JWT';
+import JWT, { TokenJWT } from '../utils/JWT';
+
+function extractToken(bearerToken: string) {
+  const token = bearerToken.split(' ')[0];
+  if (token !== 'Bearer') {
+    return bearerToken;
+  }
+  return bearerToken.split(' ')[1];
+}
 
 class Validations {
   // static validateBook(req: Request, res: Response, next: NextFunction): Response | void {
@@ -14,10 +22,8 @@ class Validations {
   // }
 
   static validarEmail(email: string): boolean {
-    const regexPart1 = /^(?!.*\.{2,})(?!.*@.*@)[a-zA-Z0-9._%+-]+@/;
-    const regexPart2 = /(?!.*\.{2,})[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    // const regex = /^(?!.*\.{2,})(?!.*@.*@)[a-zA-Z0-9._%+-]+@(?![^.]*\.{2,})[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return regexPart1.test(email) && regexPart2.test(email);
+    const regex = /^(?![a-z0-9]+\.)+[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;
+    return regex.test(email);
   }
 
   static validateUser(req: Request, res: Response, next: NextFunction): Response | void {
@@ -37,13 +43,19 @@ class Validations {
 
   static validateToken(req: Request, res: Response, next: NextFunction): Response | void {
     const token = req.headers.authorization;
+    console.log(token);
     if (!token) {
       return res.status(401).json({ message: 'Token not found' });
     }
+    extractToken(token);
     const validToken = JWT.verify(token);
     if (validToken === 'Token must be a valid Token') {
       return res.status(401).json({ message: validToken });
     }
+    const result: TokenJWT = JWT.decode(token);
+
+    req.body.email = result.email;
+
     next();
   }
 }
