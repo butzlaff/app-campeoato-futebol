@@ -43,7 +43,7 @@ User.init({
   password: {
     type: DataTypes.STRING(100),
     allowNull: false,
-  }
+  },
 }, {
   sequelize: db,
   modelName: 'users',
