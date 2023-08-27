@@ -34,6 +34,13 @@ Teams.init({
   underscored: true,
 });
 
+// Teams.hasMany(
+//   SequelizeMatches,
+//   { foreignKey: 'homeTeamId', as: 'home_team' },
+//   { foreignKey: 'homeTeamId', as: 'home_team' },
+
+// );
+
 /**
   * `Workaround` para aplicar as associations em TS:
   * Associations 1:N devem ficar em uma das instâncias de modelo
