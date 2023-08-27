@@ -18,8 +18,8 @@ export default class TeamModel implements Partial<IUserModel> {
     return user;
   }
 
-  async findOne(data: Partial<IUser>): Promise<IUser | null> {
-    const user = await this.model.findOne({ where: data });
+  async findbyEmail(email: string): Promise<IUser | null> {
+    const user = await this.model.findOne({ where: { email } });
     return user;
   }
 }

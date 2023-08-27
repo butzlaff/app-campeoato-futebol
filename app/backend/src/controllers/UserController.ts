@@ -9,7 +9,7 @@ export default class UserController {
 
   public login = async (req: Request, res: Response): Promise<Response> => {
     const { email, password } = req.body;
-    const { status, data } = await this.userService.findByEmail(email, password);
+    const { status, data } = await this.userService.findByEmail({ email, password });
     return res.status(mapStatusHTTP(status)).json(data);
   };
 }

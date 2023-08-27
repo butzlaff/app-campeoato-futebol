@@ -25,7 +25,7 @@ class Validations {
     const requiredKeys = ['email', 'password'];
     const notFoundKey = requiredKeys.find((key) => !(key in user));
     const validEmail = Validations.validarEmail(user.email);
-    if (notFoundKey) {
+    if (notFoundKey || user.email.length < 1 || user.password.length < 1) {
       return res.status(400).json({ message: 'All fields must be filled' });
     }
     if (!validEmail) {
