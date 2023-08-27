@@ -34,6 +34,7 @@ export default class UserService {
 
   public async getRole(email: string):
   Promise<ServiceResponse<Pick<IUser, 'role'> | null>> {
+    console.log(email);
     const user = await this.userModel.findbyEmail(email);
     if (user) {
       const { role } = user;

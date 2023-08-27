@@ -43,16 +43,15 @@ class Validations {
 
   static validateToken(req: Request, res: Response, next: NextFunction): Response | void {
     const token = req.headers.authorization;
-    console.log(token);
     if (!token) {
       return res.status(401).json({ message: 'Token not found' });
     }
-    extractToken(token);
-    const validToken = JWT.verify(token);
-    if (validToken === 'Token must be a valid Token') {
+    const extractedToken = extractToken(token);
+    const validToken = JWT.verify(extractedToken);
+    const result: TokenJWT = JWT.decode(extractedToken);
+    if (validToken === 'Token must be a valid Token' || !result) {
       return res.status(401).json({ message: validToken });
     }
-    const result: TokenJWT = JWT.decode(token);
 
     req.body.email = result.email;
 

@@ -4,7 +4,7 @@ export type TokenJWT = {
   email: string;
   iat: number;
   exp: number;
-};
+} | null;
 export default class JWT {
   private static secret: Secret = process.env.JWT_SECRET || 'jwt_secret';
 
@@ -20,7 +20,7 @@ export default class JWT {
     try {
       return verify(token, JWT.secret) as JwtPayload;
     } catch (e) {
-      return 'Token must be a valid Token';
+      return 'Token must be a valid token';
     }
   }
 
