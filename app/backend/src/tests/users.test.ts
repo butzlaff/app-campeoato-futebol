@@ -4,8 +4,8 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 import { app } from '../app';
 import UserModel from '../database/models/SequelizeUsers';
-import { Response } from 'superagent';
-import { adminUser, token } from './mocks/user.mock';
+// import { Response } from 'superagent';
+import { adminUser } from './mocks/user.mock';
 import JWT from '../utils/JWT';
 
 chai.use(chaiHttp);
@@ -36,6 +36,15 @@ describe('Test User functions behavior', () => {
       .set('authorization', 'token magico')
       expect(status).to.equal(401);
       expect(body).to.deep.equal({ message: 'Token must be a valid token'});
+    })
+    it('Test getRole using valid token', async () => {
+      sinon.stub(UserModel, 'findOne').resolves(adminUser as any);
+      sinon.stub(JWT, 'verify').returns('valid token');
+      sinon.stub(JWT, 'decode').returns({ email: 'admin@admin.com'} as any);
+      const { status, body } = await chai.request(app).get('/login/role')
+      .set('authorization', 'token magico')
+      expect(status).to.equal(200);
+      expect(body).to.deep.equal({ "role": "admin" });
     })
   })
 }); 

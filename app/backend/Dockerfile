@@ -1,11 +1,11 @@
 # Usar a imagem node:16.14-alpine como base
-FROM node:16.14
+FROM node:16.14-alpine
 
 # Mudar para o diretório de trabalho /app-backend
 WORKDIR /app-backend
 
 # Copiar os package.json, package-lock.json e packages.npm para o container
-COPY --chown=root:root package*.json ./
+COPY package*.json packages.npm ./
 
 # Instalar as dependências Node
 RUN npm install
