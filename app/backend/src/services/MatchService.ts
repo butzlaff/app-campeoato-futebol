@@ -3,16 +3,26 @@ import IMatch from '../Interfaces/matches/IMatch';
 import MatchModel from '../model/MatchModel';
 import { IMatchModel } from '../Interfaces/matches/IMatchModel';
 
+type Query = {
+  inProgress?: string;
+};
 export default class TeamService {
   constructor(
     private matchModel: Pick<IMatchModel, 'findAll' | 'findById'> = new MatchModel(),
   ) { }
 
-  public async findAll(): Promise<ServiceResponse<IMatch[]>> {
+  public async findAll(query: Query): Promise<ServiceResponse<IMatch[]>> {
     const matches = await this.matchModel.findAll();
-    if (matches) {
-      return { status: 'SUCCESSFUL', data: matches };
+    let result;
+    if (query.inProgress) {
+      if (query.inProgress === 'true') {
+        result = matches.filter((match) => match.inProgress);
+      } else {
+        result = matches.filter((match) => !match.inProgress);
+      }
+    } else {
+      result = matches;
     }
-    return { status: 'NOT_FOUND', data: { message: 'Not found' } };
+    return { status: 'SUCCESSFUL', data: result };
   }
 }
