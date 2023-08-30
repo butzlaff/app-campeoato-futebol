@@ -11,14 +11,6 @@ export default class UserService {
     private userModel: Pick<IUserModel, 'findbyEmail'> = new UserModel(),
   ) { }
 
-  // public async findAll(): Promise<ServiceResponse<IUser[]>> {
-  //   const teams = await this.userModel.findAll();
-  //   if (teams) {
-  //     return { status: 'SUCCESSFUL', data: teams };
-  //   }
-  //   return { status: 'NOT_FOUND', data: { message: 'Not found' } };
-  // }
-
   public async login({ email, password }: IUserLogin):
   Promise<ServiceResponse<IToken | null>> {
     const user = await this.userModel.findbyEmail(email);

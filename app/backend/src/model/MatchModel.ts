@@ -22,4 +22,9 @@ export default class MatchModel implements Partial<ICRUDModel<IMatch>> {
     const match = await this.model.findByPk(id);
     return match;
   }
+
+  async finishMath(id: number): Promise<[affectedCount: number]> {
+    const match = await this.model.update({ inProgress: false }, { where: { id } });
+    return match;
+  }
 }

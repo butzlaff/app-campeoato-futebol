@@ -1,4 +1,4 @@
-import { ServiceResponse } from '../Interfaces/Response';
+import { ServiceMessage, ServiceResponse } from '../Interfaces/Response';
 import IMatch from '../Interfaces/matches/IMatch';
 import MatchModel from '../model/MatchModel';
 import { IMatchModel } from '../Interfaces/matches/IMatchModel';
@@ -8,7 +8,7 @@ type Query = {
 };
 export default class TeamService {
   constructor(
-    private matchModel: Pick<IMatchModel, 'findAll' | 'findById'> = new MatchModel(),
+    private matchModel: Pick<IMatchModel, 'findAll' | 'findById' | 'finishMath'> = new MatchModel(),
   ) { }
 
   public async findAll(query: Query): Promise<ServiceResponse<IMatch[]>> {
@@ -24,5 +24,14 @@ export default class TeamService {
       result = matches;
     }
     return { status: 'SUCCESSFUL', data: result };
+  }
+
+  public async finishMatch(id: number): Promise<ServiceResponse<ServiceMessage>> {
+    try {
+      await this.matchModel.finishMath(id);
+      return { status: 'SUCCESSFUL', data: { message: 'Finished' } };
+    } catch (error) {
+      return { status: 'NOT_FOUND', data: { message: 'Error' } };
+    }
   }
 }
