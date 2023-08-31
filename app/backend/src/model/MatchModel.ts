@@ -29,9 +29,14 @@ export default class MatchModel implements Partial<ICRUDModel<IMatch>> {
     return match;
   }
 
-  async updateMatch({ id, awayTeamGoals, homeTeamGoals }: UpdateMatch)
+  async updateMatchGoals({ id, awayTeamGoals, homeTeamGoals }: UpdateMatch)
     : Promise<[affectedCount: number]> {
     const match = await this.model.update({ awayTeamGoals, homeTeamGoals }, { where: { id } });
+    return match;
+  }
+
+  async createMatch(data: Omit<IMatch, 'id' | 'inProgress'>): Promise<IMatch> {
+    const match = await this.model.create({ ...data, inProgress: true });
     return match;
   }
 }

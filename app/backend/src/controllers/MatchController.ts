@@ -18,12 +18,18 @@ export default class MatchesController {
     return res.status(mapStatusHTTP(status)).json(data);
   }
 
-  public async updateMatch(req: Request, res: Response): Promise<Response> {
+  public async updateMatchGoals(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
     const { awayTeamGoals, homeTeamGoals } = req.body;
-    const { status, data } = await this.matchService.updateMatch({
+    const { status, data } = await this.matchService.updateMatchGoals({
       id: Number(id), awayTeamGoals, homeTeamGoals,
     });
+    return res.status(mapStatusHTTP(status)).json(data);
+  }
+
+  public async createMatch(req: Request, res: Response): Promise<Response> {
+    const dataMatch = req.body;
+    const { status, data } = await this.matchService.createMatch(dataMatch);
     return res.status(mapStatusHTTP(status)).json(data);
   }
 }

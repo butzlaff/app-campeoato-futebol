@@ -16,4 +16,16 @@ export default class TeamModel implements Partial<ICRUDModel<ITeam>> {
     const team = await this.model.findByPk(id);
     return team;
   }
+
+  async findIfExists(ids: number[]): Promise<boolean> {
+    const teams = await this.model.findAll({
+      where: {
+        id: ids,
+      },
+    });
+    if (teams.length === ids.length) {
+      return true;
+    }
+    return false;
+  }
 }
