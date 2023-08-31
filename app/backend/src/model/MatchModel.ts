@@ -1,3 +1,4 @@
+import { UpdateMatch } from '../Interfaces/matches/IMatchModel';
 import { ICRUDModel } from '../Interfaces/ICRUDModel';
 import IMatch from '../Interfaces/matches/IMatch';
 import SequelizeMatches from '../database/models/SequelizeMatches';
@@ -25,6 +26,12 @@ export default class MatchModel implements Partial<ICRUDModel<IMatch>> {
 
   async finishMath(id: number): Promise<[affectedCount: number]> {
     const match = await this.model.update({ inProgress: false }, { where: { id } });
+    return match;
+  }
+
+  async updateMatch({ id, awayTeamGoals, homeTeamGoals }: UpdateMatch)
+    : Promise<[affectedCount: number]> {
+    const match = await this.model.update({ awayTeamGoals, homeTeamGoals }, { where: { id } });
     return match;
   }
 }

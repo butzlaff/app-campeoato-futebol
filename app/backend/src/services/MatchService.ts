@@ -1,14 +1,15 @@
 import { ServiceMessage, ServiceResponse } from '../Interfaces/Response';
 import IMatch from '../Interfaces/matches/IMatch';
 import MatchModel from '../model/MatchModel';
-import { IMatchModel } from '../Interfaces/matches/IMatchModel';
+import { IMatchModel, UpdateMatch } from '../Interfaces/matches/IMatchModel';
 
 type Query = {
   inProgress?: string;
 };
 export default class TeamService {
   constructor(
-    private matchModel: Pick<IMatchModel, 'findAll' | 'findById' | 'finishMath'> = new MatchModel(),
+    private matchModel: Pick<IMatchModel, 'findAll' | 'findById'
+    | 'finishMath' | 'updateMatch'> = new MatchModel(),
   ) { }
 
   public async findAll(query: Query): Promise<ServiceResponse<IMatch[]>> {
@@ -30,6 +31,16 @@ export default class TeamService {
     try {
       await this.matchModel.finishMath(id);
       return { status: 'SUCCESSFUL', data: { message: 'Finished' } };
+    } catch (error) {
+      return { status: 'NOT_FOUND', data: { message: 'Error' } };
+    }
+  }
+
+  public async updateMatch({ id, awayTeamGoals, homeTeamGoals }: UpdateMatch)
+    : Promise<ServiceResponse<ServiceMessage>> {
+    try {
+      await this.matchModel.updateMatch({ id, awayTeamGoals, homeTeamGoals });
+      return { status: 'SUCCESSFUL', data: { message: 'Updated' } };
     } catch (error) {
       return { status: 'NOT_FOUND', data: { message: 'Error' } };
     }
