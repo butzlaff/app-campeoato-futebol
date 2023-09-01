@@ -11,7 +11,7 @@ class TeamPointsCalculator {
   private goalsOwn = 0;
 
   constructor(
-    private homeOrAway: 'homeTeam' | 'awayTeam',
+    private homeOrAway: 'homeTeam' | 'awayTeam' | 'both',
     private teamName: string,
     private matches: IMatchPoints[],
   ) {}
@@ -39,6 +39,12 @@ class TeamPointsCalculator {
   }
 
   private isTeamInMatch(match: IMatchPoints): boolean {
+    if (this.homeOrAway === 'both') {
+      return (
+        match.awayTeam.teamName === this.teamName
+        || match.homeTeam.teamName === this.teamName
+      );
+    }
     return (
       match[this.homeOrAway].teamName === this.teamName
     );

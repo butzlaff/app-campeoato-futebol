@@ -38,7 +38,8 @@ export default class Leaderboard {
     private teamModel: TeamModel = new TeamModel(),
   ) { }
 
-  public async findAll(homeOrAway: 'homeTeam' | 'awayTeam'): Promise<ServiceResponse<IPoints[]>> {
+  public async findAll(homeOrAway: 'homeTeam' | 'awayTeam' | 'both')
+    : Promise<ServiceResponse<IPoints[]>> {
     const teams = await this.teamModel.findAll();
     const matches = await this.matchModel.findAllFinished();
     const result = teams.map((team) => {

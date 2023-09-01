@@ -17,4 +17,10 @@ router.get(
   (_req: Request, res: Response) => leaderboardController.findAll(_req, res),
 );
 
+router.get(
+  '/',
+  SetHomeOrAway.createHomeOrAway,
+  (_req: Request, res: Response) => leaderboardController.findAll(_req, res),
+);
+
 export default router;
