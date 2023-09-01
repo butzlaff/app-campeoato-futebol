@@ -4,9 +4,7 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 import { app } from '../app';
 import TeamModel from '../database/models/SequelizeTeam';
-import { Response } from 'superagent';
-import { Teams } from './mocks/team.mock';
-import JWT from '../utils/JWT';
+import { OMelhorTimeDoMundo, Teams } from './mocks/team.mock';
 
 chai.use(chaiHttp);
 
@@ -25,6 +23,15 @@ describe('Test Teams routes behavior', () => {
 
       expect(status).to.equal(200);
       expect(body).to.deep.equal(Teams);
-    }); 
+    });
+    it('Test findById sucessfull', async () => {
+      sinon.stub(TeamModel, 'findByPk').resolves(OMelhorTimeDoMundo as any);
+      // sinon.stub(JWT, 'sign').returns('valid token')
+
+      const { status, body } = await chai.request(app).get('/teams/4');
+
+      expect(status).to.equal(200);
+      expect(body).to.deep.equal(OMelhorTimeDoMundo);
+    });  
   }); 
 })

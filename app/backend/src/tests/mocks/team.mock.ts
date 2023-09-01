@@ -64,3 +64,8 @@ export const Teams = [
       "teamName": "São Paulo"
   }
 ]
+
+export const OMelhorTimeDoMundo =   {
+    "id": 4,
+    "teamName": "Corinthians"
+}

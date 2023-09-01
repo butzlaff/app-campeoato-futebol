@@ -10,17 +10,6 @@ function extractToken(bearerToken: string) {
 }
 
 class Validations {
-  // static validateBook(req: Request, res: Response, next: NextFunction): Response | void {
-  //   const book = req.body;
-  //   const requiredKeys = ['title', 'price', 'author', 'isbn'];
-  //   const notFoundKey = requiredKeys.find((key) => !(key in book));
-  //   if (notFoundKey) {
-  //     return res.status(400).json({ message: `${notFoundKey} is required` });
-  //   }
-
-  //   next();
-  // }
-
   static validarEmail(email: string): boolean {
     const regex = /^(?![a-z0-9]+\.)+[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;
     return regex.test(email);
