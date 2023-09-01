@@ -19,6 +19,17 @@ export default class MatchModel implements Partial<ICRUDModel<IMatch>> {
     return matches;
   }
 
+  async findAllFinished(): Promise<IMatch[]> {
+    const matches = await this.model.findAll({
+      include: [
+        { model: SequelizeTeam, as: 'homeTeam', attributes: ['teamName'] },
+        { model: SequelizeTeam, as: 'awayTeam', attributes: ['teamName'] },
+      ],
+      where: { inProgress: 0 },
+    });
+    return matches;
+  }
+
   async findById(id: number): Promise<IMatch | null> {
     const match = await this.model.findByPk(id);
     return match;
