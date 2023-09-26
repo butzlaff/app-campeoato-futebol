@@ -1,7 +1,7 @@
 # App-Campeonato-futebol
 <hr />
 
-<p>Este app foi construído visando gerir a classifcação de um campeonato de futebol.</p>
+<p>Este app foi construído visando gerir a classificação de um campeonato de futebol.</p>
 
 <p>Para iniciar o projeto, primeiramente você precisa ter o docker instalado.</p>
 
